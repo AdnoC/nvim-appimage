@@ -12,6 +12,7 @@ APP=NVimApIm
 LOWERAPP=${APP,,}
 # AppLocation="$HOME/$APP/"
 AppLocation="$(pwd)/$APP/"
+RootDir="$(pwd)"
 
 TAG=$(git describe --exact-match --tags HEAD 2> /dev/null)
 RE="^untagged-.*"
@@ -64,7 +65,8 @@ cd $APP.AppDir
 # Download AppRun and make it executable
 get_apprun
 
-get_desktop
+# get_desktop
+find "${RootDir}" -name "${LOWERAPP}.desktop" -xdev -exec cp {} "${LOWERAPP}.desktop" \;
 
 find "${SOURCE_DIR}" -name "nvim.png" -xdev -exec cp {} "${LOWERAPP}.png" \;
 
