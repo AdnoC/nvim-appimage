@@ -19,18 +19,21 @@ fi
 # git pull --no-edit
 git pull
 
-if [ ! -d vim/src ]; then
+if [ ! -d neovim/src ]; then
     git submodule init
 fi
 git submodule update
 
 # Get the latest vim source code
-cd vim
+cd neovim
 vimoldver=$(git rev-parse HEAD)
-git checkout master
+git checkout nightly
 git pull
-vimver=$(git describe --tags --abbrev=0)
+vimnewver=$(git rev-parse HEAD)
+vimtag=$(git describe --tags --abbrev=0)
 cd -
+
+curdate=$(date "+%F")
 
 # Check if it is updated
 if git diff --exit-code > /dev/null; then
@@ -39,6 +42,6 @@ if git diff --exit-code > /dev/null; then
 fi
 
 # Commit the change and push it
-git commit -a -m "Vim: $vimver"
-git tag $vimver
+git commit -a -m "Neovim: $vimnewver"
+git tag "$curdate"
 git push origin master --tags
