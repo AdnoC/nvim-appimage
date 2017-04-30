@@ -11,7 +11,7 @@ export ARCH="$(arch)"
 APP=NVimApIm
 LOWERAPP=${APP,,}
 # AppLocation="$HOME/$APP/"
-AppLocation="$HOME/Programming/nvim-appimage/$APP/"
+AppLocation="$(pwd)/$APP/"
 
 TAG=$(git describe --exact-match --tags HEAD 2> /dev/null)
 RE="^untagged-.*"
@@ -64,7 +64,7 @@ cd $APP.AppDir
 # Download AppRun and make it executable
 get_apprun
 
-# get_desktop
+get_desktop
 
 find "${SOURCE_DIR}" -name "nvim.png" -xdev -exec cp {} "${LOWERAPP}.png" \;
 
