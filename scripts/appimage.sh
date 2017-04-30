@@ -8,9 +8,8 @@
 
 export ARCH="$(arch)"
 
-APP=NVimApIm
+APP=NVim
 LOWERAPP=${APP,,}
-# AppLocation="$HOME/$APP/"
 AppLocation="$(pwd)/$APP/"
 RootDir="$(pwd)"
 
@@ -35,6 +34,9 @@ SOURCE_DIR="$(git rev-parse --show-toplevel)"
 # make install DESTDIR=/home/travis/$APP/$APP.AppDir
 make
 make install DESTDIR="$AppLocation/$APP.AppDir"
+
+mkdir "$AppLocation/$APP.AppDir/usr/bin"
+cp "$AppLocation/$APP.AppDir/usr/local/bin/nvim" "$AppLocation/$APP.AppDir/usr/bin/"
 
 cd "$AppLocation"
 
@@ -99,7 +101,7 @@ delete_blacklisted
 # desktopintegration asks the user on first run to install a menu item
 ########################################################################
 
-get_desktopintegration "$LOWERAPP"
+# get_desktopintegration "$LOWERAPP"
 
 ########################################################################
 # Determine the version of the app; also include needed glibc version
@@ -112,9 +114,10 @@ VERSION="Nightly-$VIM_VER-git$GIT_REV-glibc$GLIBC_NEEDED"
 # Patch away absolute paths; it would be nice if they were relative
 ########################################################################
 
-sed -i -e "s|/usr/share/|././/share/|g" usr/local/bin/nvim
-sed -i -e "s|/usr/lib/|././/lib/|g" usr/local/bin/nvim
-sed -i -e "s|/usr/share/doc/vim/|././/share/doc/vim/|g" usr/local/bin/nvim
+sed -i -e "s|/usr/share/|././/share/|g" usr/bin/nvim
+sed -i -e "s|/usr/lib/|././/lib/|g" usr/bin/nvim
+sed -i -e "s|/usr/local/|././/local/|g" usr/bin/nvim
+sed -i -e "s|/usr/share/doc/vim/|././/share/doc/vim/|g" usr/bin/nvim
 
 # Possibly need to patch additional hardcoded paths away, replace
 # "/usr" with "././" which means "usr/ in the AppDir"
