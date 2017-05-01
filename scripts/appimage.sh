@@ -9,11 +9,12 @@
 export ARCH="$(arch)"
 
 APP=NVim
-LOWERAPP=${APP,,}
-AppLocation="$(pwd)/$APP/"
-RootDir="$(pwd)"
+LOWERAPP="${APP,,}"
+ROOT_DIR="$(pwd)"
+APP_BUILD_DIR="$ROOT_DIR/$APP/"
+APP_DIR="$APP_BUILD_DIR/$APP.AppDir"
 
-TAG=$(git describe --exact-match --tags HEAD 2> /dev/null)
+TAG="$(git describe --exact-match --tags HEAD 2> /dev/null)"
 RE="^untagged-.*"
 if [[ $? != 0  ||  "$TAG" =~ "$RE" ]]; then
     echo  "non-tag commit"
@@ -34,14 +35,14 @@ make deps
 SOURCE_DIR="$(git rev-parse --show-toplevel)"
 make
 # make install DESTDIR=/home/travis/$APP/$APP.AppDir
-make install DESTDIR="$AppLocation/$APP.AppDir"
+make install DESTDIR="$APP_DIR"
 
-cd "$AppLocation"
+cd "$APP_BUILD_DIR"
 
 wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
 
-cd $APP.AppDir
+cd "$APP".AppDir
 
 # # Also needs grep for gvim.wrapper
 # cp /bin/grep ./usr/bin
@@ -66,7 +67,7 @@ cd $APP.AppDir
 #get_apprun
 
 # get_desktop
-find "${RootDir}" -name "${LOWERAPP}.desktop" -xdev -exec cp {} "${LOWERAPP}.desktop" \;
+find "${ROOT_DIR}" -name "${LOWERAPP}.desktop" -xdev -exec cp {} "${LOWERAPP}.desktop" \;
 
 find "${SOURCE_DIR}" -name "nvim.png" -xdev -exec cp {} "${LOWERAPP}.png" \;
 
@@ -111,15 +112,12 @@ VERSION="Nightly-$VIM_VER-git$GIT_REV"
 # Patch away absolute paths; it would be nice if they were relative
 ########################################################################
 
-# Using a single sed on '/usr/' breaks file headers, so we need to use several
-# for each of the use cases.
+# Using a single sed on '/usr/' breaks file headers, so we need to use one
+# for each subfolder.
 sed -i -e "s|/usr/share/|$APPDIR/usr/share/|g"     usr/local/bin/nvim
 sed -i -e "s|/usr/lib/|$APPDIR/usr/lib/|g"         usr/local/bin/nvim
 sed -i -e "s|/usr/local/|$APPDIR/usr/local/|g"     usr/local/bin/nvim
 sed -i -e "s|/usr/share/doc/vim/|$APPDIR/usr/share/doc/vim/|g" usr/local/bin/nvim
-
-# Possibly need to patch additional hardcoded paths away, replace
-# "/usr" with "././" which means "usr/ in the AppDir"
 
 # remove unneeded stuff
 # rmdir ./usr/lib64 || true
@@ -134,7 +132,7 @@ sed -i -e "s|/usr/share/doc/vim/|$APPDIR/usr/share/doc/vim/|g" usr/local/bin/nvi
 # Now packaging it as an AppImage
 ########################################################################
 
-cp "$RootDir"/nvim.apprun "$AppLocation/$APP.AppDir/AppRun"
+cp "$ROOT_DIR"/nvim.apprun "$APP_DIR/AppRun"
 
 cd .. # Go out of AppImage
 
