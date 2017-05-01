@@ -6,7 +6,7 @@
 # For more information, see http://appimage.org/
 ########################################################################
 
-export ARCH="$(arch)"
+export ARCH="${$ARCH:-$(arch)}"
 
 APP=NVim
 LOWERAPP="${APP,,}"
