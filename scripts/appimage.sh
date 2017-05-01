@@ -36,11 +36,6 @@ make
 # make install DESTDIR=/home/travis/$APP/$APP.AppDir
 make install DESTDIR="$AppLocation/$APP.AppDir"
 
-#mkdir "$AppLocation/$APP.AppDir/usr/bin"
-
-# Copy over the wrapper script that fixes the start directory
-#find "${RootDir}" -name "${LOWERAPP}.wrapper" -xdev -exec cp {} "$AppLocation/$APP.AppDir/usr/bin/${LOWERAPP}" \;
-
 cd "$AppLocation"
 
 wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
