@@ -36,10 +36,10 @@ make
 # make install DESTDIR=/home/travis/$APP/$APP.AppDir
 make install DESTDIR="$AppLocation/$APP.AppDir"
 
-mkdir "$AppLocation/$APP.AppDir/usr/bin"
+#mkdir "$AppLocation/$APP.AppDir/usr/bin"
 
 # Copy over the wrapper script that fixes the start directory
-find "${RootDir}" -name "${LOWERAPP}.wrapper" -xdev -exec cp {} "$AppLocation/$APP.AppDir/usr/bin/${LOWERAPP}" \;
+#find "${RootDir}" -name "${LOWERAPP}.wrapper" -xdev -exec cp {} "$AppLocation/$APP.AppDir/usr/bin/${LOWERAPP}" \;
 
 cd "$AppLocation"
 
@@ -68,7 +68,7 @@ cd $APP.AppDir
 ########################################################################
 
 # Download AppRun and make it executable
-get_apprun
+#get_apprun
 
 # get_desktop
 find "${RootDir}" -name "${LOWERAPP}.desktop" -xdev -exec cp {} "${LOWERAPP}.desktop" \;
@@ -118,10 +118,10 @@ VERSION="Nightly-$VIM_VER-git$GIT_REV"
 
 # Using a single sed on '/usr/' breaks file headers, so we need to use several
 # for each of the use cases.
-sed -i -e "s|/usr/share/|$APPIMAGEDIR/usr/share/|g"     usr/local/bin/nvim
-sed -i -e "s|/usr/lib/|$APPIMAGEDIR/usr/lib/|g"         usr/local/bin/nvim
-sed -i -e "s|/usr/local/|$APPIMAGEDIR/usr/local/|g"     usr/local/bin/nvim
-sed -i -e "s|/usr/share/doc/vim/|$APPIMAGEDIR/usr/share/doc/vim/|g" usr/local/bin/nvim
+sed -i -e "s|/usr/share/|$APPDIR/usr/share/|g"     usr/local/bin/nvim
+sed -i -e "s|/usr/lib/|$APPDIR/usr/lib/|g"         usr/local/bin/nvim
+sed -i -e "s|/usr/local/|$APPDIR/usr/local/|g"     usr/local/bin/nvim
+sed -i -e "s|/usr/share/doc/vim/|$APPDIR/usr/share/doc/vim/|g" usr/local/bin/nvim
 
 # Possibly need to patch additional hardcoded paths away, replace
 # "/usr" with "././" which means "usr/ in the AppDir"
@@ -138,6 +138,8 @@ sed -i -e "s|/usr/share/doc/vim/|$APPIMAGEDIR/usr/share/doc/vim/|g" usr/local/bi
 # AppDir complete
 # Now packaging it as an AppImage
 ########################################################################
+
+cp "$RootDir"/nvim.apprun "$AppLocation/$APP.AppDir/AppRun"
 
 cd .. # Go out of AppImage
 
