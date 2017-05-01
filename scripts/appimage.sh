@@ -31,12 +31,14 @@ VIM_VER="$TAG"
 make deps
 
 SOURCE_DIR="$(git rev-parse --show-toplevel)"
-# make install DESTDIR=/home/travis/$APP/$APP.AppDir
 make
+# make install DESTDIR=/home/travis/$APP/$APP.AppDir
 make install DESTDIR="$AppLocation/$APP.AppDir"
 
 mkdir "$AppLocation/$APP.AppDir/usr/bin"
-cp "$AppLocation/$APP.AppDir/usr/local/bin/nvim" "$AppLocation/$APP.AppDir/usr/bin/"
+
+# Copy over the wrapper script that fixes the start directory
+find "${RootDir}" -name "${LOWERAPP}.wrapper" -xdev -exec cp {} "$AppLocation/$APP.AppDir/usr/bin/${LOWERAPP}" \;
 
 cd "$AppLocation"
 
@@ -114,10 +116,12 @@ VERSION="Nightly-$VIM_VER-git$GIT_REV-glibc$GLIBC_NEEDED"
 # Patch away absolute paths; it would be nice if they were relative
 ########################################################################
 
-sed -i -e "s|/usr/share/|././/share/|g" usr/bin/nvim
-sed -i -e "s|/usr/lib/|././/lib/|g" usr/bin/nvim
-sed -i -e "s|/usr/local/|././/local/|g" usr/bin/nvim
-sed -i -e "s|/usr/share/doc/vim/|././/share/doc/vim/|g" usr/bin/nvim
+# Using a single sed on '/usr/' breaks file headers, so we need to use several
+# for each of the use cases.
+sed -i -e "s|/usr/share/|$APPIMAGEDIR/usr/share/|g"     usr/local/bin/nvim
+sed -i -e "s|/usr/lib/|$APPIMAGEDIR/usr/lib/|g"         usr/local/bin/nvim
+sed -i -e "s|/usr/local/|$APPIMAGEDIR/usr/local/|g"     usr/local/bin/nvim
+sed -i -e "s|/usr/share/doc/vim/|$APPIMAGEDIR/usr/share/doc/vim/|g" usr/local/bin/nvim
 
 # Possibly need to patch additional hardcoded paths away, replace
 # "/usr" with "././" which means "usr/ in the AppDir"
@@ -134,6 +138,9 @@ sed -i -e "s|/usr/share/doc/vim/|././/share/doc/vim/|g" usr/bin/nvim
 # AppDir complete
 # Now packaging it as an AppImage
 ########################################################################
+# This line was needed on Arch Linux since it for some reason was unable to
+# figure out the architecture on its own.
+# export ARCH=x86_64
 
 cd .. # Go out of AppImage
 
