@@ -23,8 +23,9 @@ fi
 cd neovim
 GIT_REV="$(git rev-parse --short HEAD)"
 
-# VIM_VER="$(git describe --tags --abbrev=0)"
-VIM_VER="$TAG"
+# Since neovim increments versions slower than vim, using
+# the commit's date makes more sense.
+VIM_VER="$(date -d "@$(git log -1 --format=%ct)" "+%F")"
 
 
 # Is this needed with travis stuff?
@@ -109,8 +110,7 @@ delete_blacklisted
 # Determine the version of the app; also include needed glibc version
 ########################################################################
 
-GLIBC_NEEDED=$(glibc_needed)
-VERSION="Nightly-$VIM_VER-git$GIT_REV-glibc$GLIBC_NEEDED"
+VERSION="Nightly-$VIM_VER-git$GIT_REV"
 
 ########################################################################
 # Patch away absolute paths; it would be nice if they were relative
