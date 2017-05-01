@@ -138,9 +138,6 @@ sed -i -e "s|/usr/share/doc/vim/|$APPIMAGEDIR/usr/share/doc/vim/|g" usr/local/bi
 # AppDir complete
 # Now packaging it as an AppImage
 ########################################################################
-# This line was needed on Arch Linux since it for some reason was unable to
-# figure out the architecture on its own.
-# export ARCH=x86_64
 
 cd .. # Go out of AppImage
 
