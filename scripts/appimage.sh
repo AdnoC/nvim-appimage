@@ -37,6 +37,9 @@ make
 # make install DESTDIR=/home/travis/$APP/$APP.AppDir
 make install DESTDIR="$APP_DIR"
 
+# Move runtime from /usr/local to /usr
+mv "$APP_DIR/usr/local/*" "$APP_DIR/usr/"
+
 cd "$APP_BUILD_DIR"
 
 wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
@@ -116,7 +119,7 @@ VERSION="Nightly-$VIM_VER-git$GIT_REV"
 # for each subfolder.
 sed -i -e "s|/usr/share/|$APPDIR/usr/share/|g"     usr/local/bin/nvim
 sed -i -e "s|/usr/lib/|$APPDIR/usr/lib/|g"         usr/local/bin/nvim
-sed -i -e "s|/usr/local/|$APPDIR/usr/local/|g"     usr/local/bin/nvim
+sed -i -e "s|/usr/local/|$APPDIR/usr/|g"     usr/local/bin/nvim
 sed -i -e "s|/usr/share/doc/vim/|$APPDIR/usr/share/doc/vim/|g" usr/local/bin/nvim
 
 # remove unneeded stuff
