@@ -117,10 +117,12 @@ VERSION="Nightly-$VIM_VER-git$GIT_REV"
 
 # Using a single sed on '/usr/' breaks file headers, so we need to use one
 # for each subfolder.
-sed -i -e "s|/usr/share/|$APPDIR/usr/share/|g"     usr/bin/nvim
-sed -i -e "s|/usr/lib/|$APPDIR/usr/lib/|g"         usr/bin/nvim
-sed -i -e "s|/usr/local/|$APPDIR/usr/|g"     usr/bin/nvim
-sed -i -e "s|/usr/share/doc/vim/|$APPDIR/usr/share/doc/vim/|g" usr/bin/nvim
+#sed -i -e "s|/usr/share/|$APPDIR/usr/share/|g"     usr/bin/nvim
+#sed -i -e "s|/usr/lib/|$APPDIR/usr/lib/|g"         usr/bin/nvim
+#sed -i -e "s|/usr/local/|$APPDIR/usr/|g"     usr/bin/nvim
+#sed -i -e "s|/usr/share/doc/vim/|$APPDIR/usr/share/doc/vim/|g" usr/bin/nvim
+
+patch_strings_in_file "$APP_DIR"/usr/bin/nvim '/usr/local/nvim' '$APPDIR/usr/nvim'
 
 # remove unneeded stuff
 # rmdir ./usr/lib64 || true
