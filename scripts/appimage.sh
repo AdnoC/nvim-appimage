@@ -11,7 +11,7 @@ export ARCH="${$ARCH:-$(arch)}"
 APP=NVim
 LOWERAPP="${APP,,}"
 ROOT_DIR="$(pwd)"
-APP_BUILD_DIR="$ROOT_DIR/$APP/"
+APP_BUILD_DIR="$ROOT_DIR/$APP"
 APP_DIR="$APP_BUILD_DIR/$APP.AppDir"
 
 TAG="$(git describe --exact-match --tags HEAD 2> /dev/null)"
@@ -38,7 +38,7 @@ make
 make install DESTDIR="$APP_DIR"
 
 # Move runtime from /usr/local to /usr
-mv "$APP_DIR/usr/local/*" "$APP_DIR/usr/"
+mv "$APP_DIR"/usr/local/* "$APP_DIR/usr/"
 
 cd "$APP_BUILD_DIR"
 
@@ -117,10 +117,10 @@ VERSION="Nightly-$VIM_VER-git$GIT_REV"
 
 # Using a single sed on '/usr/' breaks file headers, so we need to use one
 # for each subfolder.
-sed -i -e "s|/usr/share/|$APPDIR/usr/share/|g"     usr/local/bin/nvim
-sed -i -e "s|/usr/lib/|$APPDIR/usr/lib/|g"         usr/local/bin/nvim
-sed -i -e "s|/usr/local/|$APPDIR/usr/|g"     usr/local/bin/nvim
-sed -i -e "s|/usr/share/doc/vim/|$APPDIR/usr/share/doc/vim/|g" usr/local/bin/nvim
+sed -i -e "s|/usr/share/|$APPDIR/usr/share/|g"     usr/bin/nvim
+sed -i -e "s|/usr/lib/|$APPDIR/usr/lib/|g"         usr/bin/nvim
+sed -i -e "s|/usr/local/|$APPDIR/usr/|g"     usr/bin/nvim
+sed -i -e "s|/usr/share/doc/vim/|$APPDIR/usr/share/doc/vim/|g" usr/bin/nvim
 
 # remove unneeded stuff
 # rmdir ./usr/lib64 || true

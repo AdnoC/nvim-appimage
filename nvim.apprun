@@ -13,4 +13,4 @@
 # export LD_LIBRARY_PATH="$(printf "LD_LIBRARY_PATH=%s/usr/lib/:%s/usr/lib/i386-linux-gnu/:%s/usr/lib/x86_64-linux-gnu/:%s/usr/lib32/:%s/usr/lib64/:%s/lib/:%s/lib/i386-linux-gnu/:%s/lib/x86_64-linux-gnu/:%s/lib32/:%s/lib64/:%s" "$APPIMAGEDIR" "$APPIMAGEDIR" "$APPIMAGEDIR" "$APPIMAGEDIR" "$APPIMAGEDIR" "$APPIMAGEDIR" "$APPIMAGEDIR" "$APPIMAGEDIR" "$APPIMAGEDIR" "$APPIMAGEDIR" "$LD_LIBRARY_PATH")"
 
 # Run neovim and pass along any args
-"$APPDIR"/usr/local/bin/nvim "$@"
+"$APPDIR"/usr/bin/nvim "$@"
